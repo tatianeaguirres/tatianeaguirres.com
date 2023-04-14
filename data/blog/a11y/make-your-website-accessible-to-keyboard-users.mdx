@@ -1,0 +1,113 @@
+---
+title: 'Web Accessibility I: Make Your Website Accessible to Keyboard Users'
+date: '2020-07-20'
+tags: ['a11y', 'keyboard user', 'web accessibility series']
+draft: false
+summary: 'This is the first post of the Web Accessibility Series, and here you will learn what your application needs to be accessible to keyboard users in six steps.'
+---
+
+This is the first post of the Web Accessibility Series, and here you will learn what your application needs to be accessible to keyboard users in six steps.
+
+Keyboard accessibility is one of the most important and fundamental practices within web accessibility, because users with motor disabilities, low vision, or blindness mainly use only the keyboard to surf the internet. This includes people with tremors, little or no use of their hands, or without hands, which may result from an accident, amputation, or birth condition.
+
+As front-enders, we must use the best accessibility practices and techniques to improve the experience of these users in our applications.
+
+## Navigation
+
+
+A keyboard user usually uses the `tab` key to navigate the website, going through interactive elements, such as links, buttons, and forms. In addition to traditional keyboards, some users may use modified keyboards or other hardware that mimics the functionality of a keyboard.
+
+The default keyboard navigation must be logical and intuitive. This generally means that it follows the visual flow of the page: left to right, top to bottom - header first, then main navigation, then page navigation (if present), and finally the footer.
+
+## Keyboard Support
+
+- `Tab`: Moves focus to the next focusable element.
+- `Shift` + `Tab`: Moves focus to the previous focusable element.
+- `Enter` or `Space`: Buttons can be activated with both key commands.
+- `Enter`: Access the link's destination of an anchor element, expand the menu (optional) and select an option.
+- `Spacebar`:
+  - Checkboxes should be used when one or more options can be selected.
+  - Expands the dropdown menus.
+  - Minimize horizontal scrolling.
+- `Esc`: Close modals.
+- `Arrows`: Used to navigate between menu options or to scroll the page.
+
+## Focus
+
+The most common browsers, such as Chrome, Firefox, Safari, and Internet Explorer, have `:focus` on almost all (if not all) interactive elements by default, usually adding the [outline CSS property](https://developer.mozilla.org/en-US/docs/Web/CSS/outline).
+
+The rule is clear: everything which is clickable for a mouse user needs to be focusable to a keyboard user, usually, these interactive elements are the followings:
+
+- Links
+- Buttons
+- Form Fields / Controls (e.g. text fields, select boxes, radio buttons)
+- Menu items
+- Things triggered by hover, like tooltips
+- Widgets, like a calendar picker
+
+A good practice is to provide for these interactive elements the same style of `:hover`, so that the keyboard user has the same experience as the mouse user. Example:
+
+```css
+button:hover,
+button:focus {
+  background-color: aqua;
+}
+```
+
+## Tabindex
+
+The `tabindex` attribute defines the navigation order for focusable elements (typically links and form controls) within a page. It can also be used to define whether elements should be focusable or not.
+
+Links and form controls have `tabindex` by default, but it can be used when the default tab order is not ideal or when you need to give focus to elements that are not natively focusable, such as `<div>`, `<span>`, `<p>`, and `<a>` with no href.
+
+The three distinct uses of `tabindex`:
+
+- `tabindex="1"` (or any number greater than 1) defines an explicit tab order. Warning: this is almost always a bad idea, the better solution is to fix the navigation order by restructuring the HTML.
+- `tabindex="0"` allows elements besides links and form elements to receive keyboard focus. It does not change the tab order but places the element in the logical navigation flow as if it were a link on the page.
+- `tabindex="-1"` allows things besides links and form elements to receive "programmatic" focus, meaning focus can be set to the element through scripting, links, etc.
+
+## Skip Navigation Links
+
+The main content is not normally the first thing on a web page. Keyboard users usually need to navigate a long list of navigation links and other elements before arriving at the main content. This is quite difficult for users with some forms of motor disabilities.
+
+A good and inclusive solution for this is to include a skip navigation link at the top of the web page which jumps the user down at the beginning of the main content. Example:
+
+```html
+<body>
+  <div class="skip">
+    <a href="#maincontent">Skip to main content</a>
+  </div>
+  ...
+  <main id="maincontent">
+    <h1>Heading</h1>
+    <p>This is the first paragraph.</p>
+    <p>This is the second paragraph.</p>
+  </main>
+</body>
+```
+
+And if you're thinking that maybe this will destroy your beautiful layout, you can hide them off screen, then cause them to be positioned on screen when they receive keyboard focus. That way it will only be visible to those who really need them.
+
+```css
+.skip a {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip a:focus {
+  position: static;
+  width: auto;
+  height: auto;
+}
+```
+
+## Testing with the Keyboard
+
+There is no special secret to testing with the keyboard, except unplugging the mouse and leaving it in the drawer while you navigate the entire website using just the keyboard. Look at the item Keyboard Support again and try to navigate using these keys.
+
+This is also a great empathy exercise, which will help you understand the challenges that a keyboard user faces daily on the internet.
+
+The next post of the Web Accessibility Series will talk about accessibility to Screen Readers. See you there!

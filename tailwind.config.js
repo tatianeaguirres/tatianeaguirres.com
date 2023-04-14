@@ -1,18 +1,19 @@
 // @ts-check
-const { fontFamily } = require('tailwindcss/defaultTheme')
+/* eslint-disable @typescript-eslint/no-var-requires */
+
+const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors')
 
-// ../node_modules/pliny/dist/**/*.mjs is needed for monorepo setup
-/** @type {import("tailwindcss/types").Config } */
+/** @type {import("tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
+  experimental: {
+    optimizeUniversalDefaults: true,
+  },
   content: [
-    '../node_modules/pliny/**/*.{js,ts,tsx}',
-    './node_modules/pliny/**/*.{js,ts,tsx}',
-    './app/**/*.{js,ts,jsx,tsx}',
-    './pages/**/*.{js,ts,tsx}',
-    './components/**/*.{js,ts,tsx}',
-    './layouts/**/*.{js,ts,tsx}',
-    './lib/**/*.{js,ts,tsx}',
+    './pages/**/*.tsx',
+    './components/**/*.tsx',
+    './layouts/**/*.tsx',
+    './lib/**/*.ts',
     './data/**/*.mdx',
   ],
   darkMode: 'class',
@@ -28,10 +29,13 @@ module.exports = {
         14: '3.5rem',
       },
       fontFamily: {
-        sans: ['Inter', ...fontFamily.sans],
+        //@ts-ignore
+        sans: ['Open Sans', ...defaultTheme.fontFamily.sans],
+        logo: ['Sacramento', 'cursive'],
       },
       colors: {
-        primary: colors.teal,
+        primary: colors.violet,
+        secondary: colors.indigo,
         gray: colors.neutral,
       },
       typography: (theme) => ({
@@ -39,11 +43,11 @@ module.exports = {
           css: {
             color: theme('colors.gray.700'),
             a: {
-              color: theme('colors.primary.500'),
+              color: theme('colors.secondary.700'),
               '&:hover': {
-                color: `${theme('colors.primary.600')} !important`,
+                color: `${theme('colors.secondary.500')} !important`,
               },
-              code: { color: theme('colors.primary.400') },
+              code: { color: theme('colors.primary.600') },
             },
             h1: {
               fontWeight: '700',
@@ -66,8 +70,8 @@ module.exports = {
               backgroundColor: theme('colors.gray.800'),
             },
             code: {
-              color: theme('colors.pink.500'),
-              backgroundColor: theme('colors.gray.100'),
+              color: theme('colors.primary.800'),
+              backgroundColor: theme('colors.neutral.200'),
               paddingLeft: '4px',
               paddingRight: '4px',
               paddingTop: '2px',
@@ -107,11 +111,11 @@ module.exports = {
           css: {
             color: theme('colors.gray.300'),
             a: {
-              color: theme('colors.primary.500'),
+              color: theme('colors.secondary.300'),
               '&:hover': {
-                color: `${theme('colors.primary.400')} !important`,
+                color: `${theme('colors.secondary.400')} !important`,
               },
-              code: { color: theme('colors.primary.400') },
+              code: { color: theme('colors.primary.300') },
             },
             h1: {
               fontWeight: '700',
@@ -134,6 +138,7 @@ module.exports = {
               backgroundColor: theme('colors.gray.800'),
             },
             code: {
+              color: theme('colors.primary.300'),
               backgroundColor: theme('colors.gray.800'),
             },
             details: {

@@ -1,0 +1,107 @@
+---
+title: 'Semantic HTML: Images'
+date: '2020-08-04'
+tags: ['Semantic HTML', 'a11y']
+draft: false
+summary: 'In most of the cases, images are used to make the websites content more pleasant or to demonstrate an impression or emotion to the user. However, there are other factors besides "visually pleasing" that contribute to your user having a great experience on your website.'
+---
+
+The HTML `<img>` tag represents an image in an HTML document. It's used for embedding the image into the document.
+
+In most of the cases, images are used to make the website's content more pleasant or to demonstrate an impression or emotion to the user. However, there are other factors besides "visually pleasing" that contribute to your user having a great experience on your website. In this post, you will learn in 6 steps how we use the image element semantically for all users, from the user of mobile devices to the user of screen readers.
+
+## HTML `<img>` Element
+
+The basic syntax of an image element is:
+
+```html
+<img src="" alt="" />
+```
+
+Where the `src` attribute is required and contains the path to the image you want to embed.
+
+The `alt` attribute holds an alternative text of the image, which isn't mandatory but is incredibly helpful for users who need to use a screen reader to navigate websites. This descriptive text is also displayed when the image can't be displayed or if someone views your website with images disabled in their web browser - common for users using data-roaming on mobile devices.
+
+## Attributes Specific to the `<img>` Element
+
+There are 7 specific attributes for the img tag:
+
+- `src` is required and specifies the URL of the image to be embedded into the image.
+- `alt` isn't required because there are few cases when you don't need to use it (as in the case of decorative images), but in most cases, it's very important in terms of accessibility and you must describe the image clearly.
+- `crossorigin` isn't required and is a CORS settings attribute. The purpose of the crossorigin attribute is to allow you to configure the CORS requests for the element's fetched data. If this attribute is not specified, CORS is not used at all. An invalid keyword and an empty string will be handled as the anonymous value.
+- `ismap` and `usemap` aren't required and are for image maps. See more about the map tag on [Mozilla Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/map).
+- `width` isn't required and specifies the width of the image.
+- `height` isn't required and specifies the height of the image.
+
+You can also see the [full list of the Global Attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes), which contains attributes accepted in the img tag and all HTML 5 tags.
+
+## Accessibility
+
+Images make the content of the site more pleasant and help people with cognitive and learning disabilities to understand more easily. However, images can be a barrier for users with low vision or blind, who use screen readers. Accessible images are essential to ensure a good experience for users of screen readers or speech input software, as well as to help users of mobile devices that can disable images when using data-roaming.
+
+You can find tips and tricks to make your images really accessible on the previous post about [Accessibility to Screen Readers Users](https://www.tatianeaguirres.com/blog/a11y/make-your-website-accessible-to-screen-reader-users) on this blog.
+
+## Background Images
+
+Background image is a great solution when you want the image just to be a background, adding the content in front of the image. You can easily do this by using the CSS background-image property or the background property. To use these properties, you apply them to the HTML element that you wish to add the background image to. Example:
+
+```html
+<div class="image-box">
+  <p>Important text</p>
+</div>
+```
+
+```css
+.image-box {
+  background-image: url('/static/background.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 200px;
+  height: 200px;
+  color: black;
+}
+```
+
+**Warning**: Browsers don't provide any special information on background images to assistive technology. The screen reader will not announce the background image to the user, so if the image contains information critical to understanding the page's overall purpose, it's better to describe it semantically in the document.
+
+## Linked Images
+
+Linked images, when clicked on, open another web page or URL. You can place the link code around an image when your goal is to implicitly take the user to another place. A good example is using an image as a link to social networks, to the website's logo, or to indicate a file's download.
+
+Examples:
+
+```html
+<a href="https://twitter.com/tatianeaguirres" target="_blank">
+  <img src="twitter.png" alt="Open Tatiane's Twitter in a new tab." />
+</a>
+```
+
+```html
+<a href="https://www.tatianeaguirres.com/">
+  <img src="logo.png" alt="Tatiane's Website." />
+</a>
+```
+
+```html
+<a href="..." download="...">
+  <img src="pdf_icon.png" alt="PDF" />
+</a>
+```
+
+## Responsive Images
+
+You can easily make your image responsive using CSS:
+
+```css
+img {
+  width: 100%;
+  height: auto;
+}
+```
+
+With the style above, the image will be scaled according to the browser window's size. Even on the smallest mobile screen, it will be fully responsive.
+
+Do you have a question about this subject or do you have another semantic HTML practice for images that you would like to share? Write in the comments, I will be happy to talk more about it with you.
+
+Happy coding!

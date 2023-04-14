@@ -1,0 +1,284 @@
+---
+title: 'Semantic HTML: Texts and Formatting - part 2'
+date: '2020-08-23'
+tags: ['Semantic HTML', 'a11y']
+draft: false
+summary: 'And here is the second part of the Semantic HTML: Texts and Formatting, where you will learn about paragraphs, sections, and 10 other elements that will help you write amazing HTML structures.'
+---
+
+And here is the second part of the **Semantic HTML: Texts and Formatting**, where you will learn about paragraphs, sections, and 10 other elements that will help you write amazing HTML structures.
+
+If you missed the previous part, I strongly recommend you visit [part 1 of this post](https://www.tatianeaguirres.com/blog/semantic-html/semantic-html-texts-and-formatting-part-1), which talked about the other 12 semantic HTML elements.
+
+## Mark Text element
+
+The Mark Text element `<mark>` represents the text that is **marked** or **highlighted** for reference or notation purposes, due to the relevance or importance of the passage marked in the surrounding context. Example:
+
+```html
+<p>Search results for "waffle":</p>
+<hr />
+<p>
+  This Homemade Belgian <mark>Waffle</mark> Recipe is easy and makes delicious,
+  authentic, Belgian waffles.
+</p>
+<p>
+  A <mark>waffle</mark> is a dish made from leavened batter or dough that is
+  cooked between two plates that are patterned to give a characteristic size,
+  shape, and surface impression.
+</p>
+```
+
+Tips and tricks about the mark text usage:
+
+- When used in a citation (`<q>`) or a block quote (`<blockquote>`), it usually indicates a text of special interest, but not marked in the original source material. Think of it like using a highlighter pen in a book to mark passages you find interesting.
+- The `<mark>` element can indicate a part of the content that is relevant to the user at that moment, such as the result of a search.
+- Don't use `<mark>` for syntax highlighting purposes, instead use a `<span>` element styled with CSS.
+- Don't use `<mark>` to indicate that its contents have strong importance, instead use the `<strong>` element for this purpose.
+
+The presence of the `<mark>` element is not advertised by most screen readers in their default configuration. You can easily change it by adding the following CSS style with the `::before` and `::after` pseudo-elements.
+
+```css
+mark::before,
+mark::after {
+  clip-path: inset(100%);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+mark::before {
+  content: ' [highlight start] ';
+}
+
+mark::after {
+  content: ' [highlight end] ';
+}
+```
+
+⚠️ **Warning**: Some screen reader users deliberately disable announcing content that creates extra verbosity. Therefore, it is important not to abuse this technique and only apply it in situations where the lack of knowledge of the content was highlighted can negatively affect the understanding.
+
+## Paragraph element
+
+The Paragraph element `<p>` defines a paragraph. Browsers automatically add a single blank line before and after each `<p>` element. Example:
+
+```html
+<p>This is the first paragraph of text.</p>
+<p>This is the second paragraph of text.</p>
+```
+
+Divide the content into paragraphs helps make the page more accessible. Screen readers and other assistive technologies provide shortcuts to allow your users to skip to the next or the previous paragraph.
+
+⚠️ **Warning**: Use empty `<p>` elements to add space between paragraphs is a problem for screen reader users: the screen reader will announce the presence of the paragraph but without any content. It will confuse and frustrate the user. So, if you want to add extra space after the paragraph, do it with CSS:
+
+```css
+p {
+  margin-bottom: 2rem; // increase white space after a paragraph
+}
+```
+
+## Preformatted Text element
+
+The Preformatted Text element `<pre>` represents preformatted text which is to be presented exactly as written in the HTML file. The text is typically rendered using a non-proportional Monospace font. Whitespace inside this element is displayed as written. Example:
+
+```html
+<pre>
+   |\---/|
+   | ,_, |
+    \_`_/-..----.
+ ___/ `   ' ,""+ \  sk
+(__...'   __\    |`.___.';
+  (_,...'(_,.`__)/'.....+
+</pre>
+```
+
+As you can see below, the `<pre>` element keeps the whitespaces, making it possible to create an ASCII art drawing.
+
+The `<pre>` element is also very useful when we need to add some code demonstration:
+
+```html
+<pre>
+p {
+  color: blue;
+  font-size: 16px;
+}
+</pre>
+```
+
+⚠️ **Warning**: The only concern with using the preformatted text element is accessibility because users with low vision impairments who use screen readers will not understand what the preformatted text characters are representing when they are read out in sequence. A good solution for this is using a combination of the `<figure>` and `<figcaption>` elements, supplemented by a combination of `id` and the ARIA `role` and `aria-labelledby`. Example:
+
+```html
+<figure role="img" aria-labelledby="cat-caption">
+  <pre>
+   |\---/|
+   | ,_, |
+    \_`_/-..----.
+ ___/ `   ' ,""+ \  sk
+(__...'   __\    |`.___.';
+  (_,...'(_,.`__)/'.....+
+  </pre>
+  <figcaption id="cat-caption">
+    A cat lying. The cat is illustrated using preformatted text characters.
+  </figcaption>
+</figure>
+```
+
+## Section element
+
+The Section element `<section>` represents a standalone section — which doesn't have a more specific semantic element to represent it — contained within an HTML document. Generally, sections have a heading. Example:
+
+```html
+<h1>How to take great photos</h1>
+
+<section>
+  <h2>Introduction</h2>
+  <p>This is a very short introduction.</p>
+</section>
+
+<section>
+  <h2>Using the cellphone</h2>
+  <p>This is an explanation of how to take great photos using the cellphone.</p>
+</section>
+```
+
+Tips and tricks about the section usage:
+
+- Each `section` should be identified by adding a heading (`h1`-`h6` element) as a first section child.
+- If it makes sense to distribute the content of a `section`, then use the `article` element instead.
+- Don't use a `section` as a generic element, as for styling purposes, use a `div` instead, which was made for this.
+
+## Small: side comment element
+
+The Small element `<small>` represents smaller text, like copyright, other side-comments, disclaimers, caveats, legal restrictions, or for satisfying licensing requirements. Example:
+
+```html
+<dl>
+  <dt>Standard room</dt>
+  <dd>80 € <small>breakfast included, VAT not included</small></dd>
+</dl>
+```
+
+Tips and tricks about the small element usage:
+
+- The `small` element doesn't "de-emphasize" or lower the importance of the text. To mark text as not emphasized or important, simply do not mark it up with the `em` or `strong` elements respectively.
+- Don't use the `small` element for subheadings, for that purpose, use the `hgroup` element.
+- The `small` element is only intended for short runs of text. Don't use it for extended spans of text, such as multiple paragraphs, lists, or sections of text.
+
+## Span element
+
+The Span element `<span>` doesn’t mean anything on its own but can be useful when used together with the global attributes `class`, `lang`, or `dir`. It should be used only when no other semantic element is appropriate. Example:
+
+```html
+<blockquote>
+  <span lang="es"
+    >Es tan corto el amor y tan largo el olvido - Pablo Neruda</span
+  >
+</blockquote>
+```
+
+## Strong Importance element
+
+The Strong element `<strong>` represents strong importance, seriousness, or urgency for its contents. It can be used in a heading, caption, or paragraph to distinguish the part that matters from other parts that might be more detailed, more jovial, or merely boilerplate. Browsers typically render the contents in bold type. Example:
+
+```html
+<p><strong>Caution</strong> shark zone.</p>
+```
+
+Tips and tricks about the strong element usage:
+
+- Don't use the `strong` element just to apply bold styling. Use the CSS `font-weight` property for that purpose.
+- If you want to draw attention to text without indicating that it's more important, use the `b` element instead.
+- If you want to mark text that has stress emphasis, use the `em` element instead.
+
+## Subscript element
+
+The Subscript element `<sub>` specifies inline text which should be displayed as subscript for solely typographical reasons. Subscripts are typically rendered with a lowered baseline using smaller text. Example:
+
+```html
+<p>
+  A water molecule (H<sub>2</sub>O) consists of three atoms:
+  an oxygen atom and two hydrogen atoms.
+</p>
+```
+
+## Superscript element
+
+The Superscript element `<sup>` specifies inline text which is to be displayed as superscript for solely typographical reasons. Superscripts are usually rendered with a raised baseline using smaller text. Examples:
+
+```html
+<p>
+  The smartest students are
+  <span lang="fr"
+    ><abbr>M<sup>lle</sup></abbr> Gwendoline</span
+  >
+  and
+  <span lang="fr"
+    ><abbr>M<sup>me</sup></abbr> Denise</span
+  >.
+</p>
+
+<p>
+  A quadratic equation is a second-order <b>polynomial equation</b> in a single
+  variable <var>x</var>
+</p>
+<p><var>ax</var><sup>2</sup> + <var>bx</var> + <var>c</var> = <var>0</var></p>
+```
+
+## Time element
+
+The Time element `<time>` represents a specific period in time. It may include the `datetime` attribute to translate dates into a machine-readable format, allowing for better search engine results or custom features such as reminders. Example:
+
+```html
+<footer>
+  Published
+  <time property="published" datetime="2020-08-22">two days ago</time>.
+</footer>
+```
+
+The kind of content is limited to various kinds of dates, times, time-zone offsets, and durations. For further understanding see the [full list of contexts at W3C.org](https://www.w3.org/TR/html52/textlevel-semantics.html#the-time-element) in which this element can be used.
+
+Tips and tricks about the time element usage:
+
+- If the `datetime` attribute is present, its value must be a representation of the element’s contents in a machine-readable format.
+- If the `time` element doesn't have a datetime content attribute must not have any element descendants.
+
+## Thematic Break (Horizontal Rule) element
+
+The `<hr>` element is used for horizontal rules that act as dividers between sections. The horizontal rule or line has a semantic purpose, and although it's displayed as a horizontal rule in visual browsers, if you want to draw a horizontal line, you should do so using appropriate CSS. Example:
+
+```html
+<section>Content of the first section</section>
+<hr />
+<section>Content of the second section</section>
+```
+
+```css
+hr {
+  border: 0;
+  border-bottom: 6px dotted orchid;
+  width: 200px;
+}
+```
+
+## Variable element
+
+The `<var>` element represents a variable. This could be an actual variable in a mathematical expression or programming context, an identifier representing a constant, a symbol identifying a physical quantity, a function parameter, or just be a term used as a placeholder in prose. Example:
+
+```html
+<p>
+  When I add <var>n</var> to <var>7</var> and then divide my answer by
+  <var>4</var>, I get <var>5</var>.
+</p>
+
+<p>What is the value of <var>n</var>?</p>
+```
+
+## References:
+
+- [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/HTML)
+- [W3C Web Accessibility Initiative (WAI)](https://www.w3.org/WAI/)
+- [ASCII Art Archive](https://www.asciiart.eu/')
+
+Happy coding!

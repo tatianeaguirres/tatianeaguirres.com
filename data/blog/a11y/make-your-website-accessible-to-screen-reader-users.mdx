@@ -1,0 +1,242 @@
+---
+title: 'Web Accessibility II: Make Your Website Accessible to Screen Reader Users'
+date: '2020-07-27'
+tags: ['a11y', 'screen reader user', 'web accessibility series']
+draft: false
+summary: 'This is the second post of the Web Accessibility Series, and here you will learn what your application needs to be accessible to screen readers users in eight steps.'
+---
+
+This is the second post of the Web Accessibility Series, and here you will learn what your application needs to be accessible to screen readers users in eight steps.
+
+Screen readers convert digital text into synthesized speech, and they allow users to listen to the website content and navigate with the keyboard. This technology helps people with special needs to have independence and privacy to surf the internet, and our duty - as front-end developers - is to develop an accessible application for these users.
+
+According to [WebAIM Screen Reader User Survey](https://webaim.org/projects/screenreadersurvey8/) conducted in 2019, 87.6% of respondents use a screen reader due to a disability. And among those who have a disability, 76% have blindness and 18.5% have low vision (visually impaired). There were also respondents with cognitive impairment (3.3%), deafness or hard of hearing (6%), motor impairment (2%), and others (3.7%).
+
+This shows us that the vast majority of screen reader users have some kind of visual impairment, but they are not the only ones who use this technology.
+
+A screen reader user normally uses his keyboard to navigate the website, so I recommend you read my [first post of the Web Accessibility Series](https://www.tatianeaguirres.com/blog/a11y/make-your-website-accessible-to-keyboard-users), which talks about accessibility for keyboard users and complements this post.
+
+## Language
+
+As each language has its particularities, the screen reader needs to know which language it will speak, to guarantee a good experience of the content read to the user. If the screen reader doesn't know what is the language of the website, it will use the default operating system's language, which may cause mispronunciations.
+
+You can easily solve this by adding the attribute `lang` to your HTML tag. Example:
+
+```html
+<html lang="en"></html>
+```
+
+See the [full list of lang codes](https://www.w3schools.com/tags/ref_language_codes.asp) for further understanding.
+
+If your application has a quote or similar in another language, you will also need to indicate it using a `<span>` tag. Example:
+
+```html
+<blockquote>
+  <span lang="es"
+    >Es tan corto el amor y tan largo el olvido - Pablo Neruda</span
+  >
+</blockquote>
+```
+
+A good practice is to italicize foreign phrases. You can easily do this via CSS:
+
+```css
+span[lang] {
+  font-style: italic;
+}
+```
+
+## Links
+
+The screen reader user generally uses the keyboard to navigate the website, going from link to link using the `tab` key, and pressing the `enter` key to select this link. Links and form controls receive focus by default when the tab key is used, but if you want to assign focus to another element, you need to use the `tabindex` attribute into this. You can find more information on the correct usage of tabindex in the [previous post of the Web Accessibility Series](https://www.tatianeaguirres.com/blog/a11y/make-your-website-accessible-to-keyboard-users).
+
+The link must be self-explanatory, that is, the user does not want to read the same thing twice or read obvious things like "click here" because they already know that this is a link. It needs to be understandable by the context of the link. Examples:
+
+```html
+<a href="https://www.linkedin.com/in/tatianeaguirres">
+  // in this case, as the content of the link is an image,
+  // it will consider the content of the alternative text as the link description
+  <img src="linkedin.png" alt="Tatiane's LinkedIn profile" />
+</a>
+
+<a href="/products">products</a>
+```
+
+The links must be used to go somewhere, so if your link executes a function, it shouldn't be a link, but a button. Example:
+
+```html
+<button onclick="showProducts()">more products</button>
+```
+
+## Headings
+
+Screen reader users usually jump from heading to heading to get an idea of the content and then return to the most interesting topics. Therefore, the header needs to be self-explanatory, describing the content that follows.
+
+It's important to follow some indispensable patterns of Semantic HTML for this:
+
+- The `h1` tag must describe the page and have content similar to the `title` tag.
+- The page must have only one `h1`.
+- Don't skip heading levels, such as from `h2` to `h4`.
+- To highlight or emphasize text that is not a heading, use CSS to style it, and not heading tags to achieve visual results.
+- Headings from `h2` through `h6` represent increasing degrees of indentation.
+
+Example:
+
+```html
+<h1>Italian Restaurant Menu (just one h1, describing the whole content)</h1>
+  <h2>Pasta (first item level, the most important after the main title)</h2>
+    <h3>Carbonara (subitem of heading 2)</h3>
+    <h3>Pesto (subitem of heading 2)</h3>
+    <h3>Lasagna (subitem of heading 2)</h3>
+      <h4>Four Cheese (subitem of heading 3)</h4>
+      <h4>Bolognese (subitem of heading 3)</h4>
+  <h2>Risotto (first item level, the most important after the main title)</h2>
+    <h3>Mushroom (subitem of heading 2)</h3>
+    <h3>Garlic Parmesan (subitem of heading 2)</h3>
+```
+
+## ARIA - Accessible Rich Internet Applications
+
+ARIA is a set of attributes you can add to HTML elements that define ways to make web content and applications accessible to users with special needs. When accessibility issues cannot be managed with native HTML, ARIA can help bridge those gaps.
+
+There are three main components used in ARIA: `Roles`, `States`, and `Properties`.
+
+### ARIA - Roles
+
+HTML elements have a default role that is presented to assistive technology, like the `<button>` element, that has a default role of `button`. Roles are used to defining a type of user interface (UI) element, and ARIA can define roles that are not available in HTML.
+
+You can see the [full list of ARIA Roles](https://www.w3.org/WAI/PF/aria-1.1/roles") to go deeper into it.
+
+Examples:
+
+```html
+<div role="tab"><h2>heading tab</h2></div>
+
+<form role="search">...</form>
+
+<div role="region" aria-label="filters">...</div>
+```
+
+### ARIA - States and Properties
+
+ARIA States are attributes that define the current condition of an element. They generally change based on user interaction or some dynamic variable. An example is `aria-invalid="true"` in an input. This property will cause a screen reader to read this input as currently being invalid (meaning it needs to be corrected), but this state value could easily be changed to false dynamically based on user input. While ARIA Properties define additional semantics not supported in standard HTML. An example is `aria-haspopup="true"` in a button. This property extends the standard button to announce to the screen reader that the button, if activated, will trigger a pop-up.
+
+See also the [full list of States and Properties](https://www.w3.org/WAI/PF/aria-1.1/states_and_properties) for further knowledge.
+
+Examples:
+
+```html
+<input aria-required="true" aria-autocomplete="on" />
+
+<button role="submit" aria-pressed="false"></button>
+```
+
+### ARIA - Labels and Descriptions
+
+HTML facilitates associations that support accessibility. When HTML cannot create the necessary associations, ARIA can be used. This helps to avoid confusion mainly during the input process. Examples:
+
+```html
+<label for="password">Password:</label>
+<input type="password" id="password" aria-describedby="requirements" />
+<p id="requirements">Your password must be at least 6 characters</p>
+
+<input type="text" id="search" aria-label="search" />
+```
+
+## Images
+
+The first thing you need to do about accessible images is to write an appropriate alternative text. Image tags should almost always contain alternative text so that screen readers can interpret their content. Think that someone will describe an image to you by phone, if you can see this image in your mind just by its description then this is a good text alternative.
+
+What you should do to make your image accessible:
+
+- As for any text, using punctuation in the text alternative makes the information easier to understand, especially for screen readers.
+- If you use a null (empty) text alternative (`alt=""`) to hide decorative images, make sure that there is no space character in between the quotes. If a space character is present, the image may not be effectively hidden from assistive technologies.
+- There's no need to include words such as 'image', 'icon', or 'picture' in the alt text, this is redundant.
+- Prioritize the most important information about this image and write a concise description. If it is not possible, consider adding a long description to it (see example below).
+- If your image is an information icon, it's okay to describe it with the icon's name only. Example: 'Telephone' or 'Address'.
+- When you are using a decorative image, that is, an image that is being used just to make the website more visually attractive, you do not need to describe it. Example: visual stylings such as borders or dividers, or image used for ambiance (eye-candy).
+- If the purpose of your image is to demonstrate an impression or emotion to the user, then you can use an alternative text that best represents the desired impression.
+- When you have format icons within text links used to indicate download, you need to use the alternative text to describe what the format is. Example: 'PDF' or 'Word document'.
+- It's a bad practice to have images of text, nowadays you can easily add text in front of your image using CSS. But if for some odd reason you need to keep an image of text, then add the same content as the image in the alternative text.
+
+Some good examples:
+
+```html
+<img src="phone_icon.png" alt="Telephone:" /> 0123 456 7890
+
+<img src="couple_picture.jpg" alt="We are a happy couple." />
+
+<a href="..." download="...">
+  <img src="pdf_icon.png" alt="PDF" />
+</a>
+
+<a href="javascript:print()">
+  <img src="print.png" alt="Print this page." />
+</a>
+
+<img src="blue_background.jpg" alt="" />
+
+<img src="divider-line.png" alt="" />
+
+<img src="logo.png" alt="" /> Tatiane Aguirres Nogueira
+
+<img src="logo.png" alt="Tatiane Aguirres Nogueira." />
+
+<img
+  src="chart.png"
+  alt="Bar chart showing monthly and total visitors for the first quarter 2020 for sites 1 to 3."
+  longdesc="#chart-longdesc"
+/>
+<div id="chart-longdesc">long description here</div>
+```
+
+## SVG - Scalable Vector Graphics
+
+ARIA can be used to ensure the content in SVG elements is accessible. The addition of the `role="img"` attribute defines the element as an image, and the accessible name (alternative text) can be defined using aria-labeledby, which references the `<title>` element in the SVG. Example:
+
+```html
+<svg role="img" aria-labelledby="title">
+  <title id="title">Network</title>
+  <desc>An example of a computer network based on a hub</desc>
+  ...
+</svg>
+```
+
+## Invisible Content
+
+The `aria-hidden="true"` attribute hides certain types of content from screen readers. I think there are very few use cases for aria-hidden because if something is visible on the page, it should almost always be presented to screen reader users. But a good example of aria-hidden usage is to avoid significant repetition of content or for elements that should not be presented to screen reader users.
+
+The `display: none;` and `visibility: hidden;` styles will hide the content from all users. The item is removed from the visual flow of the page and is ignored by screen readers as well. So do not use this CSS if you want the content to be read by a screen reader.
+
+But if your goal is to hide text visually and keep it accessible for screen readers, you should use the following style:
+
+```css
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+```
+
+## Testing the Screen Reader
+
+Testing your application with a screen reader will give you the chance to evaluate the content from an entirely different perspective: from the perspective of a blind person. Probably you will find mistakes that would have been hard to catch visually. For example, spelling mistakes become very obvious when you hear words mispronounced by the screen reader. Screen readers are also very good for checking the accuracy and quality of image alternative text. Screen readers can also help you identify problems with reading order, table markup, form elements, and many other aspects of accessibility.
+
+Different screen readers tend to be optimized to work with different browsers. Until the publication date of this post, the following combinations work best together:
+
+- **Windows**: Internet Explorer and JAWS for Windows (JFW)
+- **Windows**: Firefox and NVDA
+- **Mac**: Safari and VoiceOver
+- **Mac and Windows**: Chrome and ChromeVox
+
+The free combinations that are easiest to test with and are quite standards-compliant are NVDA and Firefox (on Windows) and VoiceOver and Safari (on Mac). If you want to learn how to use them, there are two articles from WebAIM that I recommend for you:
+
+- [Using NVDA to Evaluate Web Accessibility](https://webaim.org/articles/nvda/)
+- [Using VoiceOver to Evaluate Web Accessibility](https://webaim.org/articles/voiceover/)
+
+The next post of the "Web Accessibility Series" will talk about accessibility to users with low vision. See you there!
